@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useRef, useEffect } from "react";
+import WindowComponent from "./WindowComponent";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [windowOpen, setWindowOpen] = useState(false);
+	const [buttonText, setButtonText] = useState("window open");
+
+	const toggleData = () => {
+		const newButtonText =
+			buttonText === "window open" ? "window close" : "window open";
+		setButtonText(newButtonText);
+		setWindowOpen(!windowOpen);
+	};
+
+	const onClickButton = () => {
+		toggleData();
+	};
+
+	useEffect(() => {
+		return () => {
+			setWindowOpen(false);
+		};
+	}, []);
+
+	return (
+		<div>
+			<button onClick={onClickButton}>{buttonText}</button>
+			{windowOpen ? (
+				<WindowComponent toggleData={toggleData}>Hello world!</WindowComponent>
+			) : null}
+		</div>
+	);
 }
 
 export default App;
